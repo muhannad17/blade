@@ -1,0 +1,41 @@
+{
+    "name": "renewablesys/blade",
+    "description": "Use Laravel Blade in any PHP project.",
+    "homepage": "https://github.com/benjamincrozat/bade",
+    "license": "WTFPL",
+    "authors": [
+        {
+            "name": "Benjamin Crozat",
+            "email": "benjamincrozat@me.com"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/benjamincrozat/bade/issues"
+    },
+    "keywords": [
+        "blade",
+        "engine",
+        "laravel",
+        "templates"
+    ],
+    "require": {
+        "php": "^7.4|^8.0",
+        "illuminate/view": "^8.0",
+        "illuminate/config": "^8.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "BC\\Blade\\": "src"
+        }
+    },
+    "config": {
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

@@ -2,10 +2,8 @@
 
 namespace BC\Blade;
 
-use Illuminate\Config\Repository;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
-use Illuminate\Contracts\View\Factory as FactoryContract;
 use Illuminate\Events\Dispatcher;
 use Illuminate\Filesystem\Filesystem;
 use Illuminate\View\Compilers\BladeCompiler;
@@ -17,7 +15,6 @@ use Illuminate\View\Engines\FileEngine;
 use Illuminate\View\Engines\PhpEngine;
 use Illuminate\View\Factory;
 use Illuminate\View\FileViewFinder;
-use Illuminate\View\ViewFinderInterface;
 
 /**
  * @method \Illuminate\Contracts\View\View make($view, $data = [], $mergeData = [])
@@ -30,22 +27,13 @@ class Blade
 
     protected string $compiledPath;
 
-    protected DispatcherContract $events;
-
-    protected Filesystem $files;
-
-    protected EngineResolver $resolver;
-
-    protected CompilerInterface $bladeCompiler;
-
-    protected FileViewFinder $finder;
-
-    protected Factory $view;
+    protected string $cachedPath;
 
     protected Container $app;
 
     /**
      * @param string|array $view_paths
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function __construct($view_paths, $compiled_path, $cache_path)
     {
@@ -62,6 +50,7 @@ class Blade
 
         $this->viewPaths = (array)$view_paths;
         $this->compiledPath = (string)$compiled_path;
+        $this->cachedPath = (string)$cache_path;
 
         $this->register();
 
@@ -73,6 +62,7 @@ class Blade
      * and the view factory for API ease of use.
      *
      * @return mixed
+     * @throws \Illuminate\Contracts\Container\BindingResolutionException
      */
     public function __call(string $name, array $arguments)
     {
@@ -111,20 +101,17 @@ class Blade
             // environment. The resolver will be used by an environment to get each of
             // the various engine implementations such as plain PHP or Blade engine.
 
-            echo 2;
             $resolver = $app['view.engine.resolver'];
 
             $finder = $app['view.finder'];
 
             $factory = $this->createFactory($resolver, $finder, $app['events']);
 
-
             // We will also set the container instance on this view environment since the
             // view composers may be classes registered in the container, which allows
             // for great testable, flexible composers for the application developer.
             $factory->setContainer($app);
 
-            echo 3;
             $factory->share('app', $app);
 
             return $factory;

@@ -10,7 +10,7 @@ Use [Laravel Blade](https://laravel.com/docs/blade) in any PHP project. The adap
 ## Installation
 
 ```php
-composer require benjamincrozat/blade
+composer require renewablesys/blade
 ```
 
 ## Usage
